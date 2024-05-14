@@ -16,4 +16,3 @@ index_name = "chat"
 vectordb = chroma.Chroma.from_documents(documents=text_chunks, embedding=embeddings, persist_directory=index_name)
 
 vectordb.persist()
-
