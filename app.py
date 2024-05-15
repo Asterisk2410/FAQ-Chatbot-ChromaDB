@@ -30,7 +30,11 @@ llm=ctransformers.CTransformers(model=r"model/llama-2-7b-chat.ggmlv3.q4_0.bin",
                           'temperature':0.5,'context_length':4096})
 
 '''Trying to code llm-cpp code from the documentation here'''
-# llm2 = llamacpp.LlamaCpp(model_path=r"model/llama-2-7b-chat.ggmlv3.q4_0.bin", n_ctx=4096, n_gpu_layers=-1, n_threads=4)
+# from langchain.callbacks.manager import CallbackManager
+# from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
+# llm2 = llamacpp.LlamaCpp(model_path=r"model/llama-2-7b-chat.ggmlv3.q4_0.bin", n_ctx=4096, n_gpu_layers=-1, n_threads=4, callback_manager=callback_manager, verbose=True, temperature=0.5, context_length=4096, max_tokens=2048)
+# llm_chain = LLMChain(llm=llm2, prompt=prompt)
+# llm_chain = invoke()
 
 qa=RetrievalQA.from_chain_type(
     llm=llm, 
