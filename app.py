@@ -2,11 +2,13 @@ from flask import Flask, render_template, jsonify, request
 from src.helper import download_hugging_face_embeddings
 from langchain.prompts import PromptTemplate
 from langchain.chains.retrieval_qa.base import RetrievalQA
-from langchain.vectorstores import chroma
-from langchain.llms import ctransformers
+from langchain_community.vectorstores import chroma
+from langchain.llms import ctransformers, llamacpp
 from dotenv.main import load_dotenv
 from src.prompt import *
+from logs.logger import get_logger
 
+logger = get_logger(__name__)
 app = Flask(__name__)
 
 load_dotenv()
@@ -24,8 +26,11 @@ chain_type_kwargs={"prompt": PROMPT}
 
 llm=ctransformers.CTransformers(model=r"model/llama-2-7b-chat.ggmlv3.q4_0.bin",
                   model_type="llama",
-                  config={'max_new_tokens':512,
-                          'temperature':0})
+                  config={'max_new_tokens':2048,
+                          'temperature':0.5,'context_length':4096})
+
+'''Trying to code llm-cpp code from the documentation here'''
+# llm2 = llamacpp.LlamaCpp(model_path=r"model/llama-2-7b-chat.ggmlv3.q4_0.bin", n_ctx=4096, n_gpu_layers=-1, n_threads=4)
 
 qa=RetrievalQA.from_chain_type(
     llm=llm, 
@@ -33,7 +38,6 @@ qa=RetrievalQA.from_chain_type(
     retriever=docsearch.as_retriever(search_kwargs={'k': 5}),
     return_source_documents=True, 
     chain_type_kwargs=chain_type_kwargs)
-
 
 @app.route("/")
 def index():
@@ -57,4 +61,4 @@ def chat():
 
 if __name__ == '__main__':
     print('jmd shree ganesha')
-    app.run(host="0.0.0.0", port= 8080)
+    app.run(host="0.0.0.0", port= 8080, debug=True)
