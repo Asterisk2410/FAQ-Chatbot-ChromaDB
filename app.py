@@ -26,8 +26,9 @@ chain_type_kwargs={"prompt": PROMPT}
 
 llm=ctransformers.CTransformers(model=r"model/llama-2-7b-chat.ggmlv3.q4_0.bin",
                   model_type="llama",
-                  config={'max_new_tokens':2048,
-                          'temperature':0.5,'context_length':4096})
+                  config={'max_new_tokens':1020,
+                          'temperature':0.5,'context_length':1020, 'gpu_layers': 50},
+                  verbose=True)
 
 '''Trying to code llm-cpp code from the documentation here'''
 # from langchain.callbacks.manager import CallbackManager
@@ -40,8 +41,9 @@ qa=RetrievalQA.from_chain_type(
     llm=llm, 
     chain_type="stuff", 
     retriever=docsearch.as_retriever(search_kwargs={'k': 5}),
-    return_source_documents=True, 
-    chain_type_kwargs=chain_type_kwargs)
+    return_source_documents=False, 
+    chain_type_kwargs=chain_type_kwargs,
+    verbose=True)
 
 @app.route("/")
 def index():

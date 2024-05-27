@@ -11,11 +11,11 @@ list_of_files = [
     "src/prompt.py",
     ".env",
     "setup.py",
-    "research/trials.ipynb",
     "app.py",
     "store_index.py",
     "static/.gitkeep",
-    "templates/chat.html"
+    "templates/chat.html",
+    "logs/logger.py"
 
 ]
 
