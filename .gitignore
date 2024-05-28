@@ -165,3 +165,4 @@ chroma
 model/llama-2-7b-chat.ggmlv3.q4_0.bin
 trials.py
 .vscode
+llama-2-7b-chat.Q5_K_M.bin

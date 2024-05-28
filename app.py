@@ -36,6 +36,8 @@ llm=ctransformers.CTransformers(model=r"model/llama-2-7b-chat.ggmlv3.q4_0.bin",
 # llm2 = llamacpp.LlamaCpp(model_path=r"model/llama-2-7b-chat.ggmlv3.q4_0.bin", n_ctx=4096, n_gpu_layers=-1, n_threads=4, callback_manager=callback_manager, verbose=True, temperature=0.5, context_length=4096, max_tokens=2048)
 # llm_chain = LLMChain(llm=llm2, prompt=prompt)
 # llm_chain = invoke()
+# llama-2-7b-chat.Q5_K_M.gguf
+# TheBloke/Llama-2-7B-Chat-GGUF
 
 qa=RetrievalQA.from_chain_type(
     llm=llm, 
