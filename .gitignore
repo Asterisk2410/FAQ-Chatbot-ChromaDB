@@ -166,7 +166,7 @@ model/llama-2-7b-chat.ggmlv3.q4_0.bin
 trials.py
 .vscode
 llama-2-7b-chat.Q5_K_M.bin
-/home/aster/FAQ-Chatbot-ChromaDB/model/llama-2-7b-chat.Q5_K_M.gguf.bin
+model/llama-2-7b-chat.Q5_K_M.gguf.bin
 trials.py
 Gravity_Flip_Workflow_Pipeline_Detailed.xlsx
 Gravity_Flip_Workflow_Pipeline.xlsx
