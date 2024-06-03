@@ -34,13 +34,17 @@ PROMPT=PromptTemplate(template=prompt_template, input_variables=["context", "que
 chain_type_kwargs={"prompt": PROMPT}
 
 llm=llamacpp.LlamaCpp(model_path=r"model\llama-2-7b-chat.Q5_K_M.gguf.bin",
-                      n_ctx=2048, n_gpu_layers=100, n_batch=512, n_threads= 1, 
-                  model_kwargs={'model_type': 'llama',
-                  'max_new_tokens':1020,
-                          'context_length':1020, 'gpu_layers': 50},
-                          temperature=0.1,
-                  callback_manager=CallbackManager([llm_custom]),
-                  verbose=True)
+                      n_ctx=2048, 
+                      n_gpu_layers=100,
+                      n_batch=512, 
+                      n_threads= 1, 
+                      model_kwargs={'model_type': 'llama', 
+                                    'max_new_tokens':1020, 
+                                    'context_length':1020, 
+                                    'gpu_layers': 50},
+                      temperature=0.1,
+                      callback_manager=CallbackManager([llm_custom]),
+                      verbose=True)
 
 '''Trying to code llm-cpp code from the documentation here'''
 # from langchain.callbacks.manager import CallbackManager
@@ -58,8 +62,6 @@ qa=RetrievalQA.from_chain_type(
     return_source_documents=False, 
     chain_type_kwargs=chain_type_kwargs,
     verbose=True)
-
-
 
 @app.route("/")
 def index():
