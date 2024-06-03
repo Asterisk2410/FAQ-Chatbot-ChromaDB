@@ -1,0 +1,5 @@
+https://www.youtube.com/watch?v=wbVdwFNeZCA
+
+set CMAKE_ARGS="-DLLAMA_CUBLAS=on" && set FORCE_CMAKE=1 && pip install --verbose --force-reinstall --no-cache-dir llama-cpp-python
+
+pip install --force-reinstall --no-cache-dir --index-url https://download.pytorch.org/whl/cu118 torch 
