@@ -165,12 +165,9 @@ chroma
 model/llama-2-7b-chat.ggmlv3.q4_0.bin
 trials.py
 .vscode
-<<<<<<< HEAD
 llama-2-7b-chat.Q5_K_M.gguf.bin
-=======
 llama-2-7b-chat.Q5_K_M.bin
 model/llama-2-7b-chat.Q5_K_M.gguf.bin
->>>>>>> a859ae52d6b2ef1037cf3d2ddc5c072a391b88be
 trials.py
 Gravity_Flip_Workflow_Pipeline_Detailed.xlsx
 Gravity_Flip_Workflow_Pipeline.xlsx
