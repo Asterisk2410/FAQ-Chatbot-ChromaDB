@@ -15,7 +15,8 @@ list_of_files = [
     "store_index.py",
     "static/.gitkeep",
     "templates/chat.html",
-    "logs/logger.py"
+    "logs/logger.py",
+    "src/llm.py"
 
 ]
 
