@@ -4,10 +4,10 @@ from src.helper import download_hugging_face_embeddings
 from langchain.prompts import PromptTemplate
 from langchain.chains.retrieval_qa.base import RetrievalQA
 from langchain_community.vectorstores import chroma
-from langchain.llms import ctransformers, llamacpp
+from langchain.llms import ctransformers, llamacpp, openai
 from langchain.callbacks.manager import CallbackManager
 from dotenv.main import load_dotenv
-from src.prompt import *
+from src.prompt import prompt_template
 from logs.logger import get_logger
 import torch
 from src.llm import LLMOutHandler
@@ -45,6 +45,9 @@ llm=llamacpp.LlamaCpp(model_path=r"model\llama-2-7b-chat.Q5_K_M.gguf.bin",
                       temperature=0.1,
                       callback_manager=CallbackManager([llm_custom]),
                       verbose=True)
+
+'''Code for OpenAI LLM GPT-3.5-turbo'''
+# llm=openai.OpenAI(model_name="gpt-3.5-turbo", temperature=0.75, callback_manager=CallbackManager([llm_custom]), verbose=True, max_tokens=2048, context_length=2048)
 
 '''Trying to code llm-cpp code from the documentation here'''
 # from langchain.callbacks.manager import CallbackManager
