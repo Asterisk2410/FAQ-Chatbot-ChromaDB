@@ -104,3 +104,11 @@ if __name__ == '__main__':
     print("starting server")
     llm_custom = LLMOutHandler(device)
     app.run(host="0.0.0.0", port=8080, debug=True)
+    
+    
+'''
+    {
+    "msg": "Do I need a referral from my GP?"
+    }
+    postman api body
+'''
