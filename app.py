@@ -11,6 +11,7 @@ from src.prompt import prompt_template
 from logs.logger import get_logger
 import torch
 from src.llm import LLMOutHandler
+import os
 
 
 logger = get_logger(__name__)
@@ -47,7 +48,7 @@ llm=llamacpp.LlamaCpp(model_path=r"model\llama-2-7b-chat.Q5_K_M.gguf.bin",
                       verbose=True)
 
 '''Code for OpenAI LLM GPT-3.5-turbo'''
-# llm=openai.OpenAI(model_name="gpt-3.5-turbo", temperature=0.75, callback_manager=CallbackManager([llm_custom]), verbose=True, max_tokens=2048, context_length=2048)
+# llm=openai.OpenAI(openai_api_key=os.environ.get('OPENAI_API_KEY'), model_name="gpt-3.5-turbo", temperature=0.75, callback_manager=CallbackManager([llm_custom]), verbose=True, max_tokens=2048, context_length=2048)
 
 '''Trying to code llm-cpp code from the documentation here'''
 # from langchain.callbacks.manager import CallbackManager
@@ -57,6 +58,12 @@ llm=llamacpp.LlamaCpp(model_path=r"model\llama-2-7b-chat.Q5_K_M.gguf.bin",
 # llm_chain = invoke()
 # llama-2-7b-chat.Q5_K_M.gguf
 # TheBloke/Llama-2-7B-Chat-GGUF
+
+'''Code for CTransformers/ ggml models'''
+# llm=ctransformers.CTransformers(model=r"model/llama-2-7b-chat.ggmlv3.q4_0.bin",
+#                   model_type="llama",
+#                   config={'max_new_tokens':512,
+#                           'temperature':0.7})
 
 qa=RetrievalQA.from_chain_type(
     llm=llm, 
