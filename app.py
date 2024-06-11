@@ -4,7 +4,8 @@ from src.helper import download_hugging_face_embeddings
 from langchain.prompts import PromptTemplate
 from langchain.chains.retrieval_qa.base import RetrievalQA
 from langchain_community.vectorstores import chroma
-from langchain.llms import ctransformers, llamacpp, openai
+from langchain.llms import ctransformers, llamacpp, openai, huggingface_hub
+from langchain_nvidia_ai_endpoints import NVIDIAEmbeddings, ChatNVIDIA
 from langchain.callbacks.manager import CallbackManager
 from dotenv.main import load_dotenv
 from src.prompt import prompt_template
@@ -18,8 +19,8 @@ logger = get_logger(__name__)
 app = Flask(__name__)
 
 load_dotenv()
-
-# PINECONE_API_KEY = os.environ.get('PINECONE_API_KEY')
+NVIDIA_API_KEY = os.environ.get('NVIDIA_API_KEY')
+OPENAI_API_KEY = os.environ.get('OPENAI_API_KEY')
 index_name = "chat"
 embeddings = download_hugging_face_embeddings()
 
@@ -34,21 +35,25 @@ PROMPT=PromptTemplate(template=prompt_template, input_variables=["context", "que
 
 chain_type_kwargs={"prompt": PROMPT}
 
-llm=llamacpp.LlamaCpp(model_path=r"model\llama-2-7b-chat.Q5_K_M.gguf.bin",
-                      n_ctx=2048, 
-                      n_gpu_layers=100,
-                      n_batch=512, 
-                      n_threads= 1, 
-                      model_kwargs={'model_type': 'llama', 
-                                    'max_new_tokens':1020, 
-                                    'context_length':1020, 
-                                    'gpu_layers': 50},
-                      temperature=0.1,
-                      callback_manager=CallbackManager([llm_custom]),
-                      verbose=True)
+# llm=llamacpp.LlamaCpp(model_path=r"model\llama-2-7b-chat.Q5_K_M.gguf.bin",
+#                       n_ctx=2048, 
+#                       n_gpu_layers=100,
+#                       n_batch=512, 
+#                       n_threads= 1, 
+#                       model_kwargs={'model_type': 'llama', 
+#                                     'max_new_tokens':1020, 
+#                                     'context_length':1020, 
+#                                     'gpu_layers': 50},
+#                       temperature=0.1,
+#                       callback_manager=CallbackManager([llm_custom]),
+#                       verbose=True,
+#                       streaming=True)
 
 '''Code for OpenAI LLM GPT-3.5-turbo'''
 # llm=openai.OpenAI(openai_api_key=os.environ.get('OPENAI_API_KEY'), model_name="gpt-3.5-turbo", temperature=0.75, callback_manager=CallbackManager([llm_custom]), verbose=True, max_tokens=2048, context_length=2048)
+
+'''Code for NVIDIA Nim LLM'''
+llm=ChatNVIDIA(base_url = "https://integrate.api.nvidia.com/v1", nvidia_api_key=NVIDIA_API_KEY, model='meta/llama3-70b-instruct', max_tokens=1024, temperature=0.7, callback_manager=CallbackManager([llm_custom]), verbose=True, streaming=True)
 
 '''Trying to code llm-cpp code from the documentation here'''
 # from langchain.callbacks.manager import CallbackManager
@@ -64,7 +69,7 @@ llm=llamacpp.LlamaCpp(model_path=r"model\llama-2-7b-chat.Q5_K_M.gguf.bin",
 #                   model_type="llama",
 #                   config={'max_new_tokens':512,
 #                           'temperature':0.7})
-
+print(llm)
 qa=RetrievalQA.from_chain_type(
     llm=llm, 
     chain_type="stuff", 
@@ -97,6 +102,7 @@ def chat():
 
 if __name__ == '__main__':
     print('jmd shree ganesha')
+    print(llm)
     device = "cuda" if torch.cuda.is_available() else "cpu"
     print(device)
     print("starting server")

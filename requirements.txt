@@ -7,4 +7,6 @@ pypdf==4.2.0
 llama-cpp-python==0.2.70
 python-dotenv
 chromadb==0.4.24
+langchain-nvidia-ai-endpoints==0.1.1
+openai==1.33.0
 -e .
