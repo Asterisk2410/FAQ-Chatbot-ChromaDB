@@ -35,6 +35,7 @@ PROMPT=PromptTemplate(template=prompt_template, input_variables=["context", "que
 
 chain_type_kwargs={"prompt": PROMPT}
 
+'''Code for LlamaCpp model'''
 # llm=llamacpp.LlamaCpp(model_path=r"model\llama-2-7b-chat.Q5_K_M.gguf.bin",
 #                       n_ctx=2048, 
 #                       n_gpu_layers=100,
