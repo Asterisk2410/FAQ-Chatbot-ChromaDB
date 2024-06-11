@@ -5,6 +5,7 @@ import numpy
 from flask import Flask, jsonify, request
 from src.helper import download_hugging_face_embeddings
 from langchain.prompts import PromptTemplate
+from langchain_nvidia_ai_endpoints import NVIDIAEmbeddings, ChatNVIDIA
 from langchain.chains.retrieval_qa.base import RetrievalQA
 from langchain_community.vectorstores import chroma
 from langchain.llms import llamacpp
@@ -13,6 +14,7 @@ from dotenv import load_dotenv
 from src.prompt import *
 from logs.logger import get_logger
 from src.llm import LLMOutHandler
+import os
 
 # Initialize logger
 logger = get_logger(__name__)
@@ -22,6 +24,7 @@ app = Flask(__name__)
 
 # Load environment variables
 load_dotenv()
+NVIDIA_API_KEY = os.environ.get('NVIDIA_API_KEY')
 
 # Define constants
 index_name = "chat"
@@ -44,23 +47,26 @@ PROMPT = PromptTemplate(template=prompt_template, input_variables=["context", "q
 # Define chain type keyword arguments
 chain_type_kwargs = {"prompt": PROMPT}
 
-# Initialize LlamaCpp model
-llm = llamacpp.LlamaCpp(
-    model_path=r"model/llama-2-7b-chat.Q5_K_M.gguf.bin",
-    n_ctx=2048, 
-    n_gpu_layers=100,
-    n_batch=512, 
-    n_threads=1, 
-    model_kwargs={
-        'model_type': 'llama', 
-        'max_new_tokens': 1020, 
-        'context_length': 1020, 
-        'gpu_layers': 50
-    },
-    temperature=0.1,
-    callback_manager=CallbackManager([llm_custom]),
-    verbose=True
-)
+# # Initialize LlamaCpp model
+# llm = llamacpp.LlamaCpp(
+#     model_path=r"model/llama-2-7b-chat.Q5_K_M.gguf.bin",
+#     n_ctx=2048, 
+#     n_gpu_layers=100,
+#     n_batch=512, 
+#     n_threads=1, 
+#     model_kwargs={
+#         'model_type': 'llama', 
+#         'max_new_tokens': 1020, 
+#         'context_length': 1020, 
+#         'gpu_layers': 50
+#     },
+#     temperature=0.1,
+#     callback_manager=CallbackManager([llm_custom]),
+#     verbose=True
+# )
+
+'''Code for NVIDIA Nim LLM'''
+llm=ChatNVIDIA(base_url = "https://integrate.api.nvidia.com/v1", nvidia_api_key=NVIDIA_API_KEY, model='meta/llama3-70b-instruct', max_tokens=1024, context_length=2048, temperature=0.7, callback_manager=CallbackManager([llm_custom]), verbose=True, streaming=True)
 
 # Initialize RetrievalQA chain
 qa = RetrievalQA.from_chain_type(
